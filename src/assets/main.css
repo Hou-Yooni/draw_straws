@@ -55,14 +55,13 @@ a,
 .main_small {
   position: absolute;
   height: 400px;
-  z-index: -1;
+  z-index: -2;
   transform: translateY(-10px);
   display: none;
 }
 
 #main_el_01 {
   top: auto;
-  animation: shakeng-x-1 0.28s infinite;
 }
 #main_el_01.main_small.animate {
   animation: shakeng-x-1 0.28s infinite;
@@ -70,7 +69,6 @@ a,
 }
 #main_el_02 {
   top: auto;
-  animation: shakeng-x-2 0.3s infinite;
 }
 #main_el_02.main_small.animate {
   animation: shakeng-x-2 0.3s infinite;
@@ -78,7 +76,6 @@ a,
 }
 #main_el_03 {
   top: auto;
-  animation: shakeng-x-3 0.3s infinite;
 }
 #main_el_03.main_small.animate {
   animation: shakeng-x-3 0.3s infinite;
@@ -86,7 +83,6 @@ a,
   display: block;
 }
 #main_el_04 {
-  animation: shakeng-x-4 0.4s infinite;
   top: auto;
 }
 #main_el_04.main_small.animate {
@@ -388,6 +384,10 @@ a,
 }
 
 @media (max-width: 768px) {
+  body {
+    background-size: 400%;
+  }
+
   #main_el,
   #main_small_area {
     width: calc(104px + 120px);
