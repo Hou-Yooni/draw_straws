@@ -1,7 +1,7 @@
 @import './base.css';
 body {
   background-size: 100%;
-  background-image: url('../src/assets/mainbg.png');
+  background-image: url('./mainbg.png');
 }
 #app {
   height: 100vh;
@@ -29,7 +29,7 @@ a,
   width: calc(104px + 150px);
   height: calc(223px + 260px);
   margin-bottom: 35px;
-  background-image: url('../src/assets/main_el.png');
+  background-image: url('./main_el.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   animation: updown 1s infinite alternate;
@@ -39,6 +39,7 @@ a,
   animation: tilt-n-move-shaking 0.24s infinite;
 }
 #main_small_area {
+  z-index: -10;
   width: calc(104px + 150px);
   height: calc(223px + 260px);
   margin-bottom: 30px;
@@ -55,7 +56,6 @@ a,
 .main_small {
   position: absolute;
   height: 400px;
-  z-index: -2;
   transform: translateY(-10px);
   display: none;
 }
