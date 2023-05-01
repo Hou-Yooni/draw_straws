@@ -36,6 +36,7 @@ const closeResult = () => {
 </script>
 
 <template>
+  <img id="main_bg" src="./assets/mainbg.png" />
   <div id="main_el" :class="main_el ? 'animate' : ''"></div>
   <div id="main_small_area">
     <div>
