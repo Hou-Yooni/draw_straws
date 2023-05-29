@@ -95,9 +95,11 @@
   padding: 1em 2em;
   -webkit-appearance: none;
   appearance: none;
-  background-color: #826006;
-  color: #fff;
+  background-image: url('./main_el_btn_bg.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   border-radius: 50px;
+  color: #fff;
   border: none;
   cursor: pointer;
   position: relative;
@@ -168,6 +170,11 @@
   animation: bottomBubbles ease-in-out 0.75s forwards;
 }
 
+.again_button {
+  margin-right: 70px;
+  margin-top: 40px;
+}
+
 #result {
   position: absolute;
   width: 100%;
@@ -178,9 +185,11 @@
   align-items: center;
   opacity: 0;
   z-index: -99;
+  display: flex;
+  flex-direction: column;
 }
 #res_main_el {
-  height: 80%;
+  height: 68%;
   animation: updown-rotate 1s infinite alternate;
 }
 
@@ -189,23 +198,48 @@
   z-index: 1;
 }
 #res_num {
-  background: #ffe97c;
+  background-image: url('./main_el_num_bg.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   color: #4e370f;
-  font-size: 16px;
+  font-size: 28px;
   font-weight: 600;
-  border: 2px solid #5b431a;
-  width: 50px;
-  height: 50px;
+  width: 199px;
+  height: 124px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100%;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-60%, -50%);
+  transform: translate(-54%, -70%);
   box-shadow: 0 2px 40px rgba(255, 255, 255, 0.7);
 }
+
+#res_head_num,
+#res_first_num {
+  background-image: url('./main_el_head_bg.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: #4e370f;
+  font-size: 28px;
+  font-weight: 600;
+  width: 199px;
+  height: 124px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-54%, -70%);
+  box-shadow: 0 2px 40px rgba(255, 255, 255, 0.7);
+}
+
+#res_first_num {
+  background-image: url('./main_el_first_bg.png');
+}
+
 #close {
   position: absolute;
   position: absolute;
@@ -393,5 +427,22 @@
   }
   .main_small {
     height: 300px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .again_button {
+    margin-right: 0px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .again_button {
+    margin-right: 0px;
+  }
+  #res_num {
+    width: 179px;
+    height: 114px;
+    transform: translate(-50%, -70%);
   }
 }
