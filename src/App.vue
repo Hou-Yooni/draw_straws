@@ -2,11 +2,19 @@
 import { onMounted, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 
+//抽籤
+const showStraws = ref(false)
 const random_num = ref(86)
 const main_el = ref(false)
 const result = ref(false)
 const showStartBtn = ref(true)
 const result_num = ref(0)
+//擲筊
+const random_num_2 = ref(3)
+const result_num_2 = ref(0)
+const result_2 = ref(false)
+const showToss = ref(true)
+const showTossBtn = ref(true)
 
 const animateButton = (e) => {
   e.preventDefault
@@ -29,6 +37,27 @@ const animateButton = (e) => {
   }, 2600)
 }
 
+const animateButton_2 = (e) => {
+  result_2.value = false
+  showToss.value = true
+  e.preventDefault
+  e.target.classList.remove('animate')
+
+  e.target.classList.add('animate')
+
+  setTimeout(function () {
+    e.target.classList.remove('animate')
+    showTossBtn.value = false
+    result_num_2.value = getRandom(random_num_2.value)
+  }, 700)
+
+  setTimeout(function () {
+    showTossBtn.value = true
+    showToss.value = false
+    result_2.value = true
+  }, 1050)
+}
+
 const getRandom = (x) => {
   return Math.floor(Math.random() * x) + 1
 }
@@ -44,8 +73,19 @@ const closeResult = (type) => {
 
 <template>
   <img id="main_bg" src="./assets/mainbg.png" />
-  <div id="main_el" :class="main_el ? 'animate' : ''"></div>
-  <div id="main_small_area">
+  <div id="main_el2_area">
+    <div v-if="showToss" id="main_el2_01" :class="!showTossBtn ? 'animate' : ''"></div>
+    <div v-if="showToss" id="main_el2_02" :class="!showTossBtn ? 'animate' : ''"></div>
+    <div v-if="result_2 && result_num_2 === 1" id="main_result_el2_01"></div>
+    <div v-if="result_2 && result_num_2 === 2" id="main_result_el2_02"></div>
+    <div v-if="result_2 && result_num_2 === 3" id="main_result_el2_03"></div>
+  </div>
+  <button v-if="showTossBtn" class="bubbly_button" @click="animateButton_2">
+    {{ !result_2 ? 'Click me!' : result_2 && result_num_2 !== 2 ? 'Again!' : 'Next' }}
+  </button>
+
+  <div v-if="showStraws" id="main_el" :class="main_el ? 'animate' : ''"></div>
+  <div v-if="showStraws" id="main_small_area">
     <div>
       <img
         class="main_small"
@@ -75,6 +115,7 @@ const closeResult = (type) => {
   </div>
 
   <button
+    v-if="showStraws"
     :style="!showStartBtn ? 'opacity: 0' : ''"
     class="bubbly_button"
     id="bubbly_button"
