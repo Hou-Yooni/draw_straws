@@ -87,7 +87,7 @@ const animateButton_2 = (e) => {
     }
     showToss.value = false
     result_2.value = true
-  }, 1200)
+  }, 1100)
 }
 
 const animateButton_3 = (e) => {
