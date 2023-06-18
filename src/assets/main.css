@@ -220,6 +220,11 @@
   margin-top: 40px;
 }
 
+.again_button.openTossPaper {
+  margin-right: 0px;
+  margin-top: 510px;
+}
+
 #result {
   position: absolute;
   width: 100%;
@@ -262,7 +267,10 @@
 }
 
 #res_head_num,
-#res_first_num {
+#res_first_num,
+#res_paper_num,
+#res_head_paper_num,
+#res_first_paper_num {
   background-image: url('./main_el_head_bg.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -283,6 +291,30 @@
 
 #res_first_num {
   background-image: url('./main_el_first_bg.png');
+}
+
+#res_paper_num {
+  color: #654100;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 20px;
+  font-size: 37px;
+}
+
+#res_paper_num,
+#res_head_paper_num,
+#res_first_paper_num {
+  background-image: url('./main_el2_num_paper.png');
+  width: 187.5px;
+  height: 460px;
+  transform: translate(-50%, -60%);
+  animation: updown2 1s infinite alternate;
+}
+#res_head_paper_num {
+  background-image: url('./main_el2_head_paper.png');
+}
+#res_first_paper_num {
+  background-image: url('./main_el2_first_paper.png');
 }
 
 #close {
@@ -306,10 +338,19 @@
 
 @keyframes updown {
   0% {
-    transform: translateY(0);
+    transform: translateY();
   }
   100% {
     transform: translateY(-10px);
+  }
+}
+
+@keyframes updown2 {
+  0% {
+    transform: translate(-50%, -60%);
+  }
+  100% {
+    transform: translate(-50%, -58%);
   }
 }
 

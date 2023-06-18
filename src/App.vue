@@ -4,11 +4,12 @@ import { RouterLink, RouterView } from 'vue-router'
 
 //抽籤
 const showStraws = ref(false)
-const random_num = ref(84)
+const random_num = ref(86)
 const main_el = ref(false)
 const result = ref(false)
 const showStartBtn = ref(true)
 const result_num = ref(0)
+const result_num_record = ref(0)
 //擲筊
 const random_num_2 = ref(3)
 const result_num_2 = ref(0)
@@ -17,10 +18,12 @@ const showToss = ref(true)
 const showTossBtn = ref(true)
 //擲筊(2)
 const tossStatus = ref(0)
-const result_3 = reactive([])
 const isHaveTossNum = ref(3)
+const isProcess = ref(true)
+const openTossPaper = ref(false)
 //擲筊(2)流程紀錄
-const processResultIndex = ref()
+const recordResultTossNum = ref(null)
+const processResultIndex = ref(null)
 const processResultTossArray = ref([])
 const processResultToss = reactive([
   [2, 2, 2],
@@ -48,6 +51,7 @@ const animateButton = (e) => {
     main_el.value = true
     showStartBtn.value = false
     result_num.value = getRandom(random_num.value)
+    result_num_record.value = result_num.value
   }, 700)
   setTimeout(function () {
     e.target.classList.remove('animate')
@@ -89,6 +93,7 @@ const animateButton_2 = (e) => {
 const animateButton_3 = (e) => {
   result_2.value = false
   showToss.value = true
+  isProcess.value = false
   e.preventDefault
   e.target.classList.remove('animate')
 
@@ -104,7 +109,6 @@ const animateButton_3 = (e) => {
     }
     result_num_2.value = processResultTossArray.value[0]
     processResultTossArray.value.shift()
-    console.log(processResultTossArray, processResultIndex)
   }, 700)
 
   setTimeout(function () {
@@ -123,7 +127,8 @@ const animateButton_3 = (e) => {
     }
     showToss.value = false
     result_2.value = true
-  }, 1200)
+    isProcess.value = true
+  }, 950)
 }
 
 const getRandom = (x) => {
@@ -147,6 +152,8 @@ const toss1Next = () => {
   result_2.value = false
   result_num_2.value = 0
   isHaveTossNum.value = 3
+
+  processResultTossArray.value = []
 }
 
 const toss2Next = () => {
@@ -156,6 +163,15 @@ const toss2Next = () => {
   showTossBtn.value = true
   result.value = false
   result_num.value = 0
+}
+
+const openResult3 = () => {
+  openTossPaper.value = true
+  result.value = true
+}
+
+const reload = () => {
+  window.location.reload()
 }
 </script>
 
@@ -169,7 +185,7 @@ const toss2Next = () => {
     <div v-if="result_2 && result_num_2 === 3" id="main_result_el2_03"></div>
   </div>
   <button v-if="showTossBtn && tossStatus == 0" class="bubbly_button" @click="animateButton_2">
-    {{ !result_2 ? 'Click me!' : 'Again!' }}
+    {{ !result_2 ? 'Click me!' : 'Again !' }}
   </button>
   <button
     v-if="result_2 && result_num_2 === 2 && tossStatus !== 1"
@@ -179,14 +195,26 @@ const toss2Next = () => {
     Next
   </button>
   <button
-    v-if="tossStatus == 1 && isHaveTossNum !== 0"
+    v-show="isProcess"
+    v-if="tossStatus == 1 && (result_num_2 === 0 || result_num_2 === 2) && isHaveTossNum !== 0"
     class="bubbly_button"
     @click="animateButton_3"
   >
-    {{ `Start (${isHaveTossNum})` }}
+    {{ `Start` }}
   </button>
-  <button v-if="isHaveTossNum === 0" class="bubbly_button" @click="toss1Next">
+  <button
+    v-if="tossStatus == 1 && result_num_2 !== 2 && result_num_2 !== 0"
+    class="bubbly_button"
+    @click="toss1Next"
+  >
     {{ '重新抽籤' }}
+  </button>
+  <button
+    v-if="isHaveTossNum === 0 && processResultIndex === 0"
+    class="bubbly_button"
+    @click="openResult3"
+  >
+    {{ 'Open !' }}
   </button>
 
   <div v-if="showStraws" id="main_el" :class="main_el ? 'animate' : ''"></div>
@@ -230,13 +258,29 @@ const toss2Next = () => {
   <div id="result" :class="result ? 'animate' : ''">
     <img
       id="close"
-      @click="closeResult"
+      @click="reload"
       src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABcUlEQVR4nO3ZQU7DMBAFUN+C2GbBgntUHUeIPQHU+eHsLDgDQgIkkFHTDZaaOvbYifyl7qrMPDtpHVuplpaWlk1l3F3fguxQqj7IDr6HRRd53l3dwJlXkPnmffeihIPePMGZL3b6LRpzQjjz8/cRxuCImOpHY5jso2/+BDliDk5DZc7BaYRq+56SjIrEzCBXTUkMcteSwIgNGDIWEr+FkaFgiecweeFiiJQNFEekaKQaxJKGqkPENFYt4pIGq0fMaXQ1iHOLvVKLz0UJjv5aZmI2Zk2IzUCwhVuLe82rf9ixhZ9f9u/3gUZB3Th9p3oMz0BUj+ELENViOAJRHQZkh1hENRgkQJR/X6cwYsl/gvwOCqVHyO9pUT6E3C4j2YGd/pRYYiAXZnTdQwjh11QqU5AaE7yd/KFL7NZ+imOFPmIAsdd37PSH1EycPegh847euLiLTRhhxL+jtyWIKaPr7ksehnKvedxbKlW/paWlRWXJLypMyUcg0fgmAAAAAElFTkSuQmCC"
     />
-    <img id="res_main_el" src="./assets/main_el_01.png" />
-    <div id="res_num" v-if="result_num !== 85 && result_num !== 86">{{ result_num }}</div>
-    <div id="res_head_num" v-if="result_num === 85"></div>
-    <div id="res_first_num" v-if="result_num === 86"></div>
-    <button v-if="result" class="bubbly_button again_button" @click="toss2Next">Next</button>
+    <img id="res_main_el" v-if="!openTossPaper" src="./assets/main_el_01.png" />
+    <div id="res_num" v-if="result_num !== 85 && result_num !== 86 && !openTossPaper">
+      {{ result_num }}
+    </div>
+    <div id="res_head_num" v-if="result_num === 85 && !openTossPaper"></div>
+    <div id="res_first_num" v-if="result_num === 86 && !openTossPaper"></div>
+    <div id="res_paper_num" v-if="openTossPaper && result_num !== 85 && result_num !== 86">
+      {{ result_num_record }}
+    </div>
+    <div id="res_head_paper_num " v-if="openTossPaper && result_num === 85"></div>
+    <div id="res_first_paper_num " v-if="openTossPaper && result_num === 86"></div>
+    <button v-if="result && !openTossPaper" class="bubbly_button again_button" @click="toss2Next">
+      Start !
+    </button>
+    <button
+      v-if="result && openTossPaper"
+      class="bubbly_button again_button openTossPaper"
+      @click="reload"
+    >
+      Again !
+    </button>
   </div>
 </template>
