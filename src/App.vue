@@ -180,9 +180,13 @@ const reload = () => {
   <div id="main_el2_area">
     <div v-if="showToss" id="main_el2_01" :class="!showTossBtn ? 'animate' : ''"></div>
     <div v-if="showToss" id="main_el2_02" :class="!showTossBtn ? 'animate' : ''"></div>
-    <div v-if="result_2 && result_num_2 === 1" id="main_result_el2_01"></div>
+    <!-- <div v-if="result_2 && result_num_2 === 1" id="main_result_el2_01"></div>
     <div v-if="result_2 && result_num_2 === 2" id="main_result_el2_02"></div>
-    <div v-if="result_2 && result_num_2 === 3" id="main_result_el2_03"></div>
+    <div v-if="result_2 && result_num_2 === 3" id="main_result_el2_03"></div> -->
+
+    <img v-show="result_2 && result_num_2 === 1" id="main_result_el2_01" src="./assets/main_el2_03.png"/>
+    <img v-show="result_2 && result_num_2 === 2" id="main_result_el2_02" src="./assets/main_el2_04.png"/>
+    <img v-show="result_2 && result_num_2 === 3" id="main_result_el2_03" src="./assets/main_el2_05.png"/>
   </div>
   <button v-if="showTossBtn && tossStatus == 0" class="bubbly_button" @click="animateButton_2">
     {{ !result_2 ? 'Click me!' : 'Again !' }}
@@ -267,6 +271,8 @@ const reload = () => {
     </div>
     <div id="res_head_num" v-if="result_num === 85 && !openTossPaper"></div>
     <div id="res_first_num" v-if="result_num === 86 && !openTossPaper"></div>
+
+    
     <div id="res_paper_num" v-if="openTossPaper && result_num !== 85 && result_num !== 86">
       {{ result_num_record }}
     </div>
