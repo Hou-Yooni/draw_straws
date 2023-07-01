@@ -499,7 +499,7 @@
     left: 80px;
   }
   70% {
-    transform: rotate3d(2, 1, 1, -180deg);
+    transform: rotate3d(2, 1, 1, -130deg);
     top: -50px;
     left: 50px;
   }

@@ -40,6 +40,9 @@ const processResultToss = reactive([
   [3, 3, 2]
 ])
 
+const loadingTime = ref(false)
+const isFirstAgain = ref(false)
+
 const animateButton = (e) => {
   e.preventDefault
   e.target.classList.remove('animate')
@@ -62,9 +65,13 @@ const animateButton = (e) => {
   }, 2600)
 }
 
-const animateButton_2 = (e) => {
+const animateButton_2 = (e, type) => {
+  if (type === 'AGAIN') {
+    isFirstAgain.value = true
+  }
   result_2.value = false
   showToss.value = true
+  loadingTime.value = false
   e.preventDefault
   e.target.classList.remove('animate')
 
@@ -88,12 +95,17 @@ const animateButton_2 = (e) => {
     showToss.value = false
     result_2.value = true
   }, 1100)
+
+  setTimeout(() => {
+    loadingTime.value = true
+  }, 1900)
 }
 
 const animateButton_3 = (e) => {
   result_2.value = false
   showToss.value = true
   isProcess.value = false
+  loadingTime.value = false
   e.preventDefault
   e.target.classList.remove('animate')
 
@@ -102,33 +114,43 @@ const animateButton_3 = (e) => {
   setTimeout(function () {
     e.target.classList.remove('animate')
     showTossBtn.value = false
+
     if (processResultTossArray.value.length === 0) {
       const index = getRandom(12) - 1
-      processResultTossArray.value = processResultToss[index]
+      processResultTossArray.value = [...processResultToss[index]]
       processResultIndex.value = index
     }
     result_num_2.value = processResultTossArray.value[0]
     processResultTossArray.value.shift()
   }, 700)
 
+  // setTimeout(function () {
+  //   showToss.value = false
+  //   result_2.value = true
+  //   isProcess.value = true
+  //   if (result_num_2.value !== 2) {
+  //     showTossBtn.value = true
+  //   } else {
+  //     showTossBtn.value = false
+  //   }
+  //   if (tossStatus.value === 1 && isHaveTossNum.value !== 0) {
+  //     isHaveTossNum.value--
+  //   }
+  // }, 950)
+
   setTimeout(function () {
-    if (result_num_2.value !== 2) {
-      showTossBtn.value = true
-    } else {
-      showTossBtn.value = false
-    }
-    if (tossStatus.value === 1 && isHaveTossNum.value !== 0) {
-      isHaveTossNum.value--
-    }
-    if (isHaveTossNum.value === 0 && processResultIndex.value !== 0) {
-      console.log('No')
-    } else if (isHaveTossNum.value === 0 && processResultIndex.value === 0) {
-      console.log('Yes')
-    }
     showToss.value = false
     result_2.value = true
     isProcess.value = true
-  }, 950)
+    showTossBtn.value = true
+    if (tossStatus.value === 1 && isHaveTossNum.value !== 0) {
+      isHaveTossNum.value--
+    }
+  }, 1100)
+
+  setTimeout(() => {
+    loadingTime.value = true
+  }, 1800)
 }
 
 const getRandom = (x) => {
@@ -152,6 +174,7 @@ const toss1Next = () => {
   result_2.value = false
   result_num_2.value = 0
   isHaveTossNum.value = 3
+  loadingTime.value = false
 
   processResultTossArray.value = []
 }
@@ -184,15 +207,38 @@ const reload = () => {
     <div v-if="result_2 && result_num_2 === 2" id="main_result_el2_02"></div>
     <div v-if="result_2 && result_num_2 === 3" id="main_result_el2_03"></div> -->
 
-    <img v-show="result_2 && result_num_2 === 1" id="main_result_el2_01" src="./assets/main_el2_03.png"/>
-    <img v-show="result_2 && result_num_2 === 2" id="main_result_el2_02" src="./assets/main_el2_04.png"/>
-    <img v-show="result_2 && result_num_2 === 3" id="main_result_el2_03" src="./assets/main_el2_05.png"/>
+    <img
+      v-show="result_2 && result_num_2 === 1"
+      id="main_result_el2_01"
+      src="./assets/main_el2_03.png"
+    />
+    <img
+      v-show="result_2 && result_num_2 === 2"
+      id="main_result_el2_02"
+      src="./assets/main_el2_04.png"
+    />
+    <img
+      v-show="result_2 && result_num_2 === 3"
+      id="main_result_el2_03"
+      src="./assets/main_el2_05.png"
+    />
   </div>
-  <button v-if="showTossBtn && tossStatus == 0" class="bubbly_button" @click="animateButton_2">
-    {{ !result_2 ? 'Click me!' : 'Again !' }}
+  <button
+    v-if="showTossBtn && tossStatus == 0 && !result_2 && !isFirstAgain"
+    class="bubbly_button"
+    @click="animateButton_2"
+  >
+    {{ 'Click me!' }}
   </button>
   <button
-    v-if="result_2 && result_num_2 === 2 && tossStatus !== 1"
+    v-if="showTossBtn && tossStatus == 0 && result_2 && loadingTime"
+    class="bubbly_button"
+    @click="animateButton_2($event, 'AGAIN')"
+  >
+    {{ 'Again !' }}
+  </button>
+  <button
+    v-if="result_2 && result_num_2 === 2 && tossStatus !== 1 && loadingTime"
     class="bubbly_button"
     @click="toss1Next"
   >
@@ -200,14 +246,18 @@ const reload = () => {
   </button>
   <button
     v-show="isProcess"
-    v-if="tossStatus == 1 && (result_num_2 === 0 || result_num_2 === 2) && isHaveTossNum !== 0"
+    v-if="
+      isHaveTossNum === 0
+        ? tossStatus == 1 && (result_num_2 === 0 || (result_num_2 === 2 && isHaveTossNum !== 0))
+        : tossStatus == 1 && (result_num_2 === 0 || (result_num_2 === 2 && loadingTime))
+    "
     class="bubbly_button"
     @click="animateButton_3"
   >
     {{ `Start` }}
   </button>
   <button
-    v-if="tossStatus == 1 && result_num_2 !== 2 && result_num_2 !== 0"
+    v-if="tossStatus == 1 && result_num_2 !== 2 && result_num_2 !== 0 && loadingTime"
     class="bubbly_button"
     @click="toss1Next"
   >
@@ -272,12 +322,14 @@ const reload = () => {
     <div id="res_head_num" v-if="result_num === 85 && !openTossPaper"></div>
     <div id="res_first_num" v-if="result_num === 86 && !openTossPaper"></div>
 
-    
-    <div id="res_paper_num" v-if="openTossPaper && result_num !== 85 && result_num !== 86">
+    <div
+      id="res_paper_num"
+      v-if="openTossPaper && result_num_record !== 85 && result_num_record !== 86"
+    >
       {{ result_num_record }}
     </div>
-    <div id="res_head_paper_num " v-if="openTossPaper && result_num === 85"></div>
-    <div id="res_first_paper_num " v-if="openTossPaper && result_num === 86"></div>
+    <div id="res_head_paper_num" v-if="openTossPaper && result_num_record === 85"></div>
+    <div id="res_first_paper_num" v-if="openTossPaper && result_num_record === 86"></div>
     <button v-if="result && !openTossPaper" class="bubbly_button again_button" @click="toss2Next">
       Start !
     </button>
