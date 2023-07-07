@@ -1,10 +1,11 @@
 <script setup>
-import { onMounted, ref, reactive } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { ref, reactive, computed } from 'vue'
+import NUMBERS from './data/numbers'
+import GODS from './data/gods'
 
 //抽籤
 const showStraws = ref(false)
-const random_num = ref(86)
+const random_num = ref(85)
 const main_el = ref(false)
 const result = ref(false)
 const showStartBtn = ref(true)
@@ -196,6 +197,44 @@ const openResult3 = () => {
 const reload = () => {
   window.location.reload()
 }
+
+const calcString = computed(() => {
+  return function value(s) {
+    let style = null
+    switch (s?.length) {
+      case 2:
+        style = 'top:38%;font-size: 55px;letter-spacing: 22px;'
+        break
+      case 3:
+        style = 'top:29%;font-size: 55px;letter-spacing: 22px;'
+        break
+      case 4:
+        style = 'top:24%;font-size: 55px;letter-spacing: 12px;'
+        break
+      case 5:
+        style = 'top:24%;font-size: 48px;letter-spacing: 3px;'
+        break
+      case 7:
+        style = 'top:24%;font-size: 35px;letter-spacing: 1px;'
+        break
+      case 8:
+        style = 'top:23%;font-size: 33px;letter-spacing: 0px;'
+        break
+      case 9:
+        style = 'top:23%;font-size: 30px;letter-spacing: 0px;'
+        break
+      case 10:
+        style = 'top:22%;font-size: 27px;letter-spacing: 0px;'
+        break
+      case 11:
+        style = 'top:22%;font-size: 25px;letter-spacing: 0px;'
+        break
+      default:
+        break
+    }
+    return style
+  }
+})
 </script>
 
 <template>
@@ -234,6 +273,7 @@ const reload = () => {
     v-if="showTossBtn && tossStatus == 0 && result_2 && loadingTime"
     class="bubbly_button"
     @click="animateButton_2($event, 'AGAIN')"
+    style="position: absolute; bottom: 28%"
   >
     {{ 'Again !' }}
   </button>
@@ -241,6 +281,7 @@ const reload = () => {
     v-if="result_2 && result_num_2 === 2 && tossStatus !== 1 && loadingTime"
     class="bubbly_button"
     @click="toss1Next"
+    style="position: absolute; bottom: 28%"
   >
     Next
   </button>
@@ -253,6 +294,7 @@ const reload = () => {
     "
     class="bubbly_button"
     @click="animateButton_3"
+    style="position: absolute; bottom: 28%"
   >
     {{ `Start` }}
   </button>
@@ -260,6 +302,7 @@ const reload = () => {
     v-if="tossStatus == 1 && result_num_2 !== 2 && result_num_2 !== 0 && loadingTime"
     class="bubbly_button"
     @click="toss1Next"
+    style="position: absolute; bottom: 28%"
   >
     {{ '重新抽籤' }}
   </button>
@@ -267,6 +310,7 @@ const reload = () => {
     v-if="isHaveTossNum === 0 && processResultIndex === 0"
     class="bubbly_button"
     @click="openResult3"
+    style="position: absolute; bottom: 28%"
   >
     {{ 'Open !' }}
   </button>
@@ -316,20 +360,22 @@ const reload = () => {
       src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABcUlEQVR4nO3ZQU7DMBAFUN+C2GbBgntUHUeIPQHU+eHsLDgDQgIkkFHTDZaaOvbYifyl7qrMPDtpHVuplpaWlk1l3F3fguxQqj7IDr6HRRd53l3dwJlXkPnmffeihIPePMGZL3b6LRpzQjjz8/cRxuCImOpHY5jso2/+BDliDk5DZc7BaYRq+56SjIrEzCBXTUkMcteSwIgNGDIWEr+FkaFgiecweeFiiJQNFEekaKQaxJKGqkPENFYt4pIGq0fMaXQ1iHOLvVKLz0UJjv5aZmI2Zk2IzUCwhVuLe82rf9ixhZ9f9u/3gUZB3Th9p3oMz0BUj+ELENViOAJRHQZkh1hENRgkQJR/X6cwYsl/gvwOCqVHyO9pUT6E3C4j2YGd/pRYYiAXZnTdQwjh11QqU5AaE7yd/KFL7NZ+imOFPmIAsdd37PSH1EycPegh847euLiLTRhhxL+jtyWIKaPr7ksehnKvedxbKlW/paWlRWXJLypMyUcg0fgmAAAAAElFTkSuQmCC"
     />
     <img id="res_main_el" v-if="!openTossPaper" src="./assets/main_el_01.png" />
-    <div id="res_num" v-if="result_num !== 85 && result_num !== 86 && !openTossPaper">
-      {{ result_num }}
+    <div id="res_num" v-if="result_num !== 85 && result_num !== 1 && !openTossPaper">
+      {{ NUMBERS[result_num - 1] }}
     </div>
     <div id="res_head_num" v-if="result_num === 85 && !openTossPaper"></div>
-    <div id="res_first_num" v-if="result_num === 86 && !openTossPaper"></div>
+    <div id="res_first_num" v-if="result_num === 1 && !openTossPaper"></div>
 
     <div
       id="res_paper_num"
-      v-if="openTossPaper && result_num_record !== 85 && result_num_record !== 86"
+      v-if="openTossPaper && result_num_record !== 85 && result_num_record !== 1"
     >
-      {{ result_num_record }}
+      {{ NUMBERS[result_num_record - 1] }}
+      <p :style="calcString(GODS[result_num_record - 2])">{{ GODS[result_num_record - 2] }}</p>
     </div>
+
     <div id="res_head_paper_num" v-if="openTossPaper && result_num_record === 85"></div>
-    <div id="res_first_paper_num" v-if="openTossPaper && result_num_record === 86"></div>
+    <div id="res_first_paper_num" v-if="openTossPaper && result_num_record === 1"></div>
     <button v-if="result && !openTossPaper" class="bubbly_button again_button" @click="toss2Next">
       Start !
     </button>

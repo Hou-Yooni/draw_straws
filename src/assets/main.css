@@ -1,10 +1,14 @@
 @import './base.css';
+@font-face {
+  font-family: 'JINXUAN';
+  src: url('./fonts/JF-JINXUAN-3.1-MEDIUM.OTF');
+}
 #app {
   height: 100vh;
   width: 100vw;
   margin: 0 auto;
   padding: 2rem;
-
+  font-family: 'JINXUAN';
   font-weight: normal;
 
   display: flex;
@@ -27,7 +31,7 @@
   width: calc(104px + 150px);
   height: calc(223px + 260px);
   margin-bottom: 35px;
-  background-image: url('./main_el.png');
+  background-image: url('./main_el2.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   animation: updown 1s infinite alternate;
@@ -39,6 +43,7 @@
 #main_el2_area {
   display: flex;
 }
+
 #main_el2_01,
 #main_el2_02,
 #main_result_el2_01,
@@ -47,22 +52,29 @@
   position: relative;
   width: 141px;
   height: 225px;
-  margin-bottom: 35px;
   background-image: url('./main_el2_01.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   /* animation: updown 1s infinite alternate; */
 }
 
+#main_el2_01,
+#main_el2_02 {
+  margin-bottom: 35px;
+}
+
 #main_el2_02 {
   background-image: url('./main_el2_02.png');
 }
-#main_result_el2_01 {
-  width: 297px;
-  height: 300px;
+#main_result_el2_01,
+#main_result_el2_02,
+#main_result_el2_03 {
+  margin-bottom: 70px;
+  width: 306px;
+  height: 339px;
   background-image: none;
 }
-#main_result_el2_02 {
+/* #main_result_el2_02 {
   width: 297px;
   height: 300px;
   background-image: none;
@@ -71,7 +83,7 @@
   width: 306px;
   height: 276px;
   background-image: none;
-}
+} */
 
 #main_el2_01.animate {
   animation: strawsL 0.35s ease-in;
@@ -297,8 +309,16 @@
   color: #654100;
   display: flex;
   align-items: flex-start;
-  padding-top: 20px;
-  font-size: 37px;
+  padding-top: 26px;
+  font-size: 32px;
+}
+
+#res_paper_num > p {
+  position: absolute;
+  writing-mode: vertical-lr;
+  top: 24%;
+  font-size: 55px;
+  letter-spacing: 12px;
 }
 
 #res_paper_num,
