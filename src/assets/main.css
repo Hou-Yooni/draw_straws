@@ -618,3 +618,9 @@
     transform: translate(-50%, -70%);
   }
 }
+
+@media screen and (max-width: 420px) {
+  .bubbly_button_S {
+    bottom: 20% !important;
+  }
+}

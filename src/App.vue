@@ -271,7 +271,7 @@ const calcString = computed(() => {
   </button>
   <button
     v-if="showTossBtn && tossStatus == 0 && result_2 && loadingTime"
-    class="bubbly_button"
+    class="bubbly_button bubbly_button_S"
     @click="animateButton_2($event, 'AGAIN')"
     style="position: absolute; bottom: 28%"
   >
@@ -279,7 +279,7 @@ const calcString = computed(() => {
   </button>
   <button
     v-if="result_2 && result_num_2 === 2 && tossStatus !== 1 && loadingTime"
-    class="bubbly_button"
+    class="bubbly_button bubbly_button_S"
     @click="toss1Next"
     style="position: absolute; bottom: 28%"
   >
@@ -292,7 +292,7 @@ const calcString = computed(() => {
         ? tossStatus == 1 && (result_num_2 === 0 || (result_num_2 === 2 && isHaveTossNum !== 0))
         : tossStatus == 1 && (result_num_2 === 0 || (result_num_2 === 2 && loadingTime))
     "
-    class="bubbly_button"
+    class="bubbly_button bubbly_button_S"
     @click="animateButton_3"
     style="position: absolute; bottom: 28%"
   >
@@ -300,7 +300,7 @@ const calcString = computed(() => {
   </button>
   <button
     v-if="tossStatus == 1 && result_num_2 !== 2 && result_num_2 !== 0 && loadingTime"
-    class="bubbly_button"
+    class="bubbly_button bubbly_button_S"
     @click="toss1Next"
     style="position: absolute; bottom: 28%"
   >
@@ -308,7 +308,7 @@ const calcString = computed(() => {
   </button>
   <button
     v-if="isHaveTossNum === 0 && processResultIndex === 0"
-    class="bubbly_button"
+    class="bubbly_button bubbly_button_S"
     @click="openResult3"
     style="position: absolute; bottom: 28%"
   >
